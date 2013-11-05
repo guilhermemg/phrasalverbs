@@ -1,0 +1,8 @@
+{
+    "name": "Phrasal Verbs App",
+    "short_name": "phrasalverbs",
+    "thumbnail": "http://img40.imageshack.us/img40/408/phrasalverbs.gif",
+    "description": "Experimentos com phrasal verbs",
+    "question1": "O significado da combinação é formado por:",
+    "question2": "Que outra(s) palavra(s) poderia(m) ser usada(s) no lugar da combinação verbo-partícula mantendo o significado da sentença?"
+}

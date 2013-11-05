@@ -1,0 +1,125 @@
+<div class="row">
+    <div id="finish" class="alert alert-success" style="display:none;">
+        <strong>Muito bem!</strong> Sua resposta foi salva</strong>
+    </div>
+    <div id="error" class="alert alert-error" style="display:none;">
+        <a class="close">×</a>
+        <strong>Erro!</strong> Algo ocorreu errado, Por favor contate os administradores.</strong>
+    </div> 
+</div>
+
+<div class="row skeleton"> 
+    <div class="span6 ">
+        <h1 id="phrasal_verb">Phrasal Verb</h1>
+        <h1 id="exemplo">Exemplo</h1>
+        <br/>
+        <h1 id="question1">Questao 1</h1>
+        <div id="answer1">
+            <h1>
+            <p><input id="opt1" type="radio" name="formacao" value="verbo"> significado do verbo.
+            <p><input id="opt2" type="radio" name="formacao" value="particula"> significado da partícula/preposição.
+            <p><input id="opt3" type="radio" name="formacao" value="ambos"> significado do verbo e da particula/preposição.
+            <p><input id="opt4" type="radio" name="formacao" value="nenhum"> nenhum dos dois.
+            </h1>
+        </div>
+
+        <br/>
+        <h1 id="question2">Questao 2</h1>
+        <div id="answer2">
+            <p><input id="resposta2" type=text name="resposta2" size=50>
+        </div>
+        <br/>
+        <div id="sendButton">
+            <button class="btn btn-success btn-answer" ><i class="icon icon-white icon-thumbs-up"></i> Confirmar</button>
+        </div>
+        <br/>
+
+        <p>Voce esta trabalhando na tarefa: <span id="task-id" class="label label-warning">#</span></p>
+        <p>Voce ja completou: <span id="done" class="label label-info"></span> tarefas das
+
+        <!-- Progress bar for the user -->
+
+        <span id="existentes" class="label label-inverse"></span></p>
+        <div class="progress progress-striped">
+            <div id="progress" rel="tooltip" title="#" class="bar" style="width: 0%;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+function loadUserProgress() {
+    pybossa.userProgress('phrasalverbs').done(function(data){
+        var pct = Math.round((data.done*100)/data.total);
+        $("#progress").css("width", pct.toString() +"%");
+        $("#progress").attr("title", pct.toString() + "% completed!");
+        $("#progress").tooltip({'placement': 'left'}); 
+        $("#existentes").text(data.total);
+        $("#done").text(data.done);
+    });
+}
+
+pybossa.taskLoaded(function(task, deferred) {
+    if ( !$.isEmptyObject(task) ) {
+        deferred.resolve(task);
+    }
+    else {
+        deferred.resolve(task);
+    }
+});
+pybossa.presentTask(function(task, deferred) {
+    if ( !$.isEmptyObject(task) ) {
+        loadUserProgress();
+        $('#question1').html(task.info.question1);
+        $('#question2').html(task.info.question2);
+        $('#phrasal_verb').html("Phrasal verb: <strong>" + task.info.phrasal_verb + "</strong>");
+        var string_exemplo = "Exemplo: "
+        if (task.info.exemplo_parte_1 != -1) {
+            string_exemplo += task.info.exemplo_parte_1 + " ";
+        }
+        string_exemplo += "<strong>"+ task.info.verbo + "</strong> ";
+        if (task.info.exemplo_parte_2 != -1){
+            string_exemplo += task.info.exemplo_parte_2 + " ";
+        }
+        string_exemplo += "<strong>" + task.info.particula + "</strong>";
+        if (task.info.parte_3 != -1){
+            string_exemplo += " " + task.info.exemplo_parte_3;
+        }
+        else {
+            string_exemplo += "."
+        }
+        $('#exemplo').html(string_exemplo)
+        $('#task-id').html(task.id);
+        $('.btn-answer').off('click').on('click', function(evt) {
+            var resposta1 = $('input[@name:formacao]:checked').val();
+            var resposta2 = $('#resposta2').val();
+            var answer = {'resposta1' : resposta1,
+                          'resposta2' : resposta2};
+            
+            document.getElementById("resposta2").value = "";
+
+            document.getElementById("opt1").checked = false;
+            document.getElementById("opt2").checked = false;
+            document.getElementById("opt3").checked = false;
+            document.getElementById("opt4").checked = false;
+
+            if (typeof answer != 'undefined') {
+                //console.log(answer);
+                pybossa.saveTask(task.id, answer).done(function() {
+                    deferred.resolve();
+                });
+            }
+            else {
+                $('#error').show();
+            }
+        });
+        $('#loading').hide();
+    }
+    else {
+        $(".skeleton").hide();
+        $("#loading").hide();
+        $("#finish").fadeIn(500);
+    }
+});
+
+pybossa.run('phrasalverbs');
+</script>

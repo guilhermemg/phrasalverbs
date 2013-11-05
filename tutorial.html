@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="span12">
+        <div id="modal" class="modal hide fade">
+            <div class="modal-header">
+                <h3>Tutorial - Phrasal Verbs</h3>
+            </div>
+            <div id="0" class="modal-body" style="display:none">
+                <p><strong>Ola!</strong> Este aplicativo tem como objetivo descobrir qual a melhor forma de ensinar <strong>phrasal verbs</strong> a criancas aprendendo a sua lingua nativa, 
+                ou outras pessoas querendo aprender uma lingua estrangeira..
+               </p> 
+            </div>
+            <div id="1" class="modal-body" style="display:none">
+                <p>A aplicacao e bem simples. Um <strong>phrasal verb</strong>, bem como um exemplo de sua utilizacao, sao exibidos. A seguir, duas perguntas sao feitas:</p>
+                <p><strong>1) O significado da combinação é formado por:</strong></p>
+                <p>2) Que outra(s) palavra(s) poderia(m) ser usada(s) no lugar da combinação verbo-partícula mantendo o significado da sentença?</strong></p>
+                <br/>
+                <p>
+                Para a primeira pergunta, o usuario deve escolher uma das opcoes a seguir:
+                </p>
+                <p><strong>
+                <p><p>         a) os significados do verbo e da partícula</p></p>
+                <p><p>         b) o significado do verbo                 </p></p>
+                <p><p>         c) o significado da partícula             </p></p>
+                <p><p>         d) nenhum dos dois                        </p></p>
+                </strong></p>
+                <br/>
+                <p>
+                Para a segunda pergunta, o usuario deve escrever uma sentenca completa que tenha o mesmo significado do exemplo dado, porem, sem fazer uso
+               de <strong>nenhum phrasal verb.</strong>
+               </p>
+            </div>
+            <div class="modal-footer">
+                <a id="prevBtn" href="#" onclick="showStep('prev')" class="btn">Anterior</a>
+                <a id="nextBtn" href="#" onclick="showStep('next')" class="btn btn-success">Proximo</a>
+                <a id="startContrib" href="../phrasalverbs/newtask" class="btn btn-primary" style="display:none"><i class="icon-thumbs-up"></i> Comece a contribuir!</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var step = -1;
+    function showStep(action) {
+        $("#" + step).hide();
+        if (action == 'next') {
+            step = step + 1;
+        }
+        if (action == 'prev') {
+            step = step - 1;
+        }
+        if (step == 0) {
+            $("#prevBtn").hide();
+        }
+        else {
+            $("#prevBtn").show();
+        }
+
+        if (step == 1 ) {
+            $("#nextBtn").hide();
+            $("#startContrib").show();
+        }
+        $("#" + step).show();
+    }
+
+    showStep('next');
+    $("#modal").modal('show');
+</script>
